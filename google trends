@@ -1,0 +1,25 @@
+#need to be using at least python3.4
+from pytrends.request import TrendReq
+from contextlib import suppress
+# enter credentials
+google_username = "enteryouremail"
+google_password = "enteryourpassword"
+path = ""
+# Login to Google. Only need to run this once, the rest of requests will use the same session.
+pytrend = TrendReq(google_username, google_password, custom_useragent='My Pytrends Script')
+
+#Create an array of states for looping
+states = ['US-AL', 'US-AK', 'US-AZ', 'US-AR', 'US-CA', 'US-CO', 'US-CT', 'US-DC', 'US-DE', 'US-FL', 'US-GA', 
+          'US-HI', 'US-ID', 'US-IL', 'US-IN', 'US-IA', 'US-KS', 'US-KY', 'US-LA', 'US-ME', 'US-MD', 
+          'US-MA', 'US-MI', 'US-MN', 'US-MS', 'US-MO', 'US-MT', 'US-NE', 'US-NV', 'US-NH', 'US-NJ', 
+          'US-NM', 'US-NY', 'US-NC', 'US-ND', 'US-OH', 'US-OK', 'US-OR', 'US-PA', 'US-RI', 'US-SC', 
+          'US-SD', 'US-TN', 'US-TX', 'US-UT', 'US-VT', 'US-VA', 'US-WA', 'US-WV', 'US-WI', 'US-WY']
+
+for state in states:
+    #Ignore exceptions
+    with suppress(KeyError):
+        # Create payload and capture API tokens. Only needed for interest_over_time(), interest_by_region() & related_queries()
+        pytrend.build_payload(kw_list=['frequent urination', 'oxybutynin' , 'myrbetriq' , 'urinary incontinence' , 'overactive bladder'], geo=state, timeframe='2016-12-14 2017-01-25')
+        #Interest Over Time   
+        interest_over_time_df = pytrend.interest_over_time()
+        print(state, interest_over_time_df)
